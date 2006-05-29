@@ -1,0 +1,54 @@
+. sysprofile/profile.config
+
+if test "$1" = ""; then
+    PROFILE="default"
+    DIR=$PREFIX
+else
+    PROFILE=$(basename $1)
+    DIR=$PREFIX/$PROFILE
+fi
+
+# adjust executable path
+
+# get raw path depending on whether a profile was previously selected or not
+if test "$SELECTPROFILE_OLDPATH" = "";then
+    RAWPATH="$PATH"
+else
+    RAWPATH="$SELECTPROFILE_OLDPATH"
+fi
+
+# save old path
+SELECTPROFILE_OLDPATH="$RAWPATH"
+export SELECTPROFILE_OLDPATH
+# set new path
+export PATH="$DIR/bin:$RAWPATH"
+
+if test -d $DIR; then
+    # configure site for autoconf scripts
+    if test -r $DIR/bin/site; then
+	export CONFIG_SITE=$DIR/bin/site
+    else
+	export CONFIG_SITE=""
+    fi
+
+    # set compiler environment variables; we do so
+    # to be independent of path changes.
+    if test "$1" = ""; then
+	export CXX=""
+	export CC=""
+	export SELECTPROFILE_OLDPATH=""
+	export PATH="$RAWPATH"
+    else
+	export CXX=$WRAPPERDIR/$PROFILE-g++
+	export CC=$WRAPPERDIR/$PROFILE-gcc
+    fi
+
+    echo "CXX         = $CXX"
+    echo "CC          = $CC"
+    echo "CONFIG_SITE = $CONFIG_SITE"
+    echo
+    echo "profile $PROFILE selected."
+else
+    echo "Profile directory $DIR does not exist."
+    false
+fi

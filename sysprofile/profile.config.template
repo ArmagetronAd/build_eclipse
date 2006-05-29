@@ -1,0 +1,6 @@
+#!/bin/sh
+# environment profile selection configuration
+
+PREFIX=/usr/local
+WRAPPERDIR=$PREFIX/bin/profile
+WRAPPED_PROGRAMS="gcc g++"

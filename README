@@ -1,0 +1,151 @@
+This package is provided as an addition to Armagetron Advanced and distributable
+under the same conditions.
+
+Purpose:
+1) To build and debug AA from whithin the Eclipse IDE
+2) to have the most common configuration variants ready without having to remember CXXFLAGS and 
+   configure arguments
+3) to easily allow builds with completely different base configurations, like
+   - nondefault configure arguments
+   - different CXXFLAGS
+   - different compilers and libraries
+
+The target audiences are AA developers and testers. The Eclipse integration uses symbolic links and thus
+is only usable in a unix environment.
+
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+Eclipse HOWTO:
+Get eclipse from http://www.eclipse.org and CDT from http://download.eclipse.org/tools/cdt/releases/new/
+( it is best to install eclipse first and get CDT over the buildin update manager )
+
+Convention:
+Capitalized words refer to Eclipse entities ( like View, Menu, Window... ).
+
+-------------------------------------------------------------------------------------------------------
+Getting it:
+Start with a clean workspace. Open the CVS Repository Exploring Perspective.
+Add the AA CVS repository to the Repository View by right clicking in the CVS Repositories
+View, then selecting "New/Repository Location" from the popup menu. Enter the following values:
+
+Host: cvs.sf.net
+Repository Path: /cvsroot/armagetronad 
+
+Developers continue with
+User: enter your sourceforge user name here
+Connection Type: ext
+
+everyone else uses
+User: anonymous
+Connection Type: pserver
+
+then click on Finish.
+Expand the repository, then expand HEAD. Check out the projects armagetronad and armagetronad_build_eclipse
+by right clicking and selecting "Check Out" from the popup menu.
+
+-------------------------------------------------------------------------------------------------------
+Compiling:
+When the checkout is complete, switch to the C/C++ perspective and open the Make Targets View. You
+will find Make Targets in armagetronad_build_eclipse/maketargets. You can build AA intrusively and
+nonintrusively. For an nonintrusive build, build the Make Target of your choice ( see general section
+for descriptions ) from here. For an intrusive build, build the special Make Target "select". This will
+put links to armagetronad_build_eclipse from the main AA source directory. Refresh the project armagetronad;
+a new folder called EclipseBuild will appear. Expand it and you will find the same make targets as in
+the build project that you can use instead of them ( but avoiding the quirk described below ).
+Instead of the make targets, you can choose to build the projects using the project menu or the project's
+context menus. This will be equivalent to building the "default" make target for the build project and
+to the "AAdefault" target for the AA project.
+Autobuilding has been enabled in all projects; you can enable or disable it globally with the menuitem 
+Project/Build Automatically.
+The make targets in the "global" subfolder will invoke make with the given target on all registered build
+directories. The distclean target there will not only bring the build directories back to their original
+state, but the AA directory itself, too.
+
+-------------------------------------------------------------------------------------------------------
+Debugging:
+You need to have built the Make Target "select" from the build project for this to work.
+Select Run/Debug from the menu or click on the bug in the Run Toolbar; you will find two debug configurations in C/C++ Local,
+one for the server and one for the client. Select one and click on Debug to start. Notice that Eclipse is capable of
+managing several debug sessions at once. A really quick way to start a debug session is to click on the small arrow
+to the right of the bug from the Toolbar and select the configuration of your choice.
+
+-------------------------------------------------------------------------------------------------------
+Multiple configurations:
+Open the CVS Repository Exploring perspective and the AA repository. Right click on armagetron_build_eclipse
+and select "Check Out As..." from the popup menu. Choose the one you want to debug by Building its select Make Target.
+Building a project not currently selected is no problem.
+
+-------------------------------------------------------------------------------------------------------
+Eclipse Quirks you should be aware of:
+- When Eclipse finds a directory with CVS metainfo where it thinks one should not be ( in a folder that is not
+  source controlled itself ), it tries to delete it. Since the texture/sound/model directories are soft linked
+  into the build directory and Eclipse treats soft links like the real thing, the CVS subdirectories of these resource
+  are in danger. Therefore, the makefile write protects them. Normal operation stays possible, but you have to unprotect the CVS
+  directories before you can delete them and you cannot use the CVS command line client anymore. The "global/distclean" make
+  target takes care of that for you.
+- Compile errors during nonintrusive builds will be correctly added to the Problems View; however, they will never
+  be deleted. You have to delete them manually.
+- Don't check out the main AA project twice in the same workspace; that will confuse the C++ parser.
+
+-------------------------------------------------------------------------------------------------------
+BUGS: 
+- when cleaning and building armagetronad and armagetronad_build_eclipse together, cleaning and building will be
+  executed twice.
+
+-------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+General HOWTO:
+This package may be of use for non-Eclipsians, too. You can check it out parallel to your AA directory ( with
+default values, it has to be in the same parent directory ). cd into the directory and type "make <target>"
+to configure and build various configurations.
+
+-------------------------------------------------------------------------------------------------------
+Make targets:
+ Management:
+  clean:      cleans all big files, leaves the var subdirectories and configuration files intact
+  distclean:  brings package back to the state of distribution
+  select:     only really useful for Eclipse users; generates an image of this project in the AA
+              directory so all make targets can be built from there
+  initialize: creates the configuration files without building anything
+  beautify:   indents source code
+  register:   registers this build directory with AA so it is visited by the global make targets
+  unregister: undoes the registration
+ Single Configuration:
+  {client/server}_{debug/optimize} : builds client or server in debug or optimized settings
+ Multiple Configurations:
+  default:    whatever you configure; set to debug initially
+  all:        all packages
+  debug:      server and client in debug mode
+  optimize:   server and client optimized
+  client:     client opimized and in debug mode
+  server:     server opimized and in debug mode
+ Global Make Targets:
+  you can use any of the above make targets and append the suffix .global; the effect of that target
+  is to build the original target for all registered build folders. A build folder is registered/unregistered
+  with the register/unregister make target. A build folder gets registered automatically when it is selected or
+  anything is build with it and it is unregistered on "make distclean".
+
+-------------------------------------------------------------------------------------------------------
+Configuration Files:
+ The configuration files are generated from included templates the first time you invoke make. They
+ are never touched again unless you make distclean ( which deletes them ). The files are
+make.config: Settings for the makefile. Put custom targets in here. Adapt AAPATH it if you do not want to put
+             this build package into the same parent directory as AA.
+preconf:     Shell script called before configure; can be used to set common shell variables and configure
+             options. The ideal place to select an alternative compiler or alternative tools and libraries.
+sysprofile/profile.config: see sysprofile/README for a description
+
+CAUTION: you should either "make clean" after every configuration file change or activate autoclean in make.config.
+
+-------------------------------------------------------------------------------------------------------
+Multiple configurations:
+Checkout this module under different names using
+
+cvs co -d <alternative_name> armagetronad_build_eclipse
+cd <alternative_name>
+make initialize
+
+Then you should edit the config files ( an alternative build directory is useless without an alternative configuration )
+and build your make targets as described above.
+
+-------------------------------------------------------------------------------------------------------

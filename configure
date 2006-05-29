@@ -1,0 +1,25 @@
+#!/bin/bash
+
+CONFIG=$1
+shift
+
+test -d build || mkdir build
+if ! test -r build/$CONFIG/Makefile; then
+	test -d build/$CONFIG || mkdir build/$CONFIG
+	. ./preconfig
+    export XML2_CONFIG
+	pushd build/$CONFIG > /dev/null
+
+    # remove spaces from flags
+    export CXXFLAGS=$(echo "$CXXFLAGS" | sed -e "s|  | |g" -e "s|^ ||" -e"s| $||")
+
+    export DEBUGLEVEL
+    export CODELEVEL
+
+	echo -e "\nConfiguring:"
+	echo DEBUGLEVEL=$DEBUGLEVEL CODELEVEL=$CODELEVEL CXX=\"$CXX\" CXXFLAGS=\"$CXXFLAGS\" ../../$AAPATH/configure -C $CONFARG "$@"
+	echo
+
+	sh ../../$AAPATH/configure -C $CONFARG "$@"
+	popd > /dev/null
+fi

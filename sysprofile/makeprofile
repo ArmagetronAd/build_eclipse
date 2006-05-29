@@ -1,0 +1,79 @@
+#!/bin/sh
+# makes a new profile
+
+. $(dirname $0)/profile.config
+
+if test "$1" = ""; then
+    echo ""
+    echo "Usage: $0 <profile-name>"
+    echo " where <profile-name> is an existing subdirectory of $PREFIX."
+    echo ""
+    echo " No installation needs to exist there prior to executing this command."
+    echo " After creating and selecting a profile, it can be filled with nondefault"
+    echo " installations of gcc, libraries and tools without conflict. Just install"
+    echo " everything you want as usual with \"./configure; make install\"."
+    echo ""
+    echo " Pathnames and tools to wrap can be configured in $(dirname $0)/profile-config."
+    echo ""
+    exit 1
+fi
+
+PROFILE=$(basename $1)
+DIR=$PREFIX/$PROFILE
+
+test -d $DIR || { echo "Profile directory $DIR does not exist."; exit 1;}
+echo "Creating profile $PROFILE..."
+
+test -d $DIR/bin || mkdir $DIR/bin
+test -d $DIR/src || mkdir $DIR/src
+test -d $DIR/lib || mkdir $DIR/lib
+test -d $WRAPPERDIR || mkdir $WRAPPERDIR
+
+pushd $DIR/bin/ > /dev/null
+
+# delete old profile wrappers
+rm -f $WRAPPERDIR/$PROFILE-*
+
+# wrap programs
+for PROG in $WRAPPED_PROGRAMS; do
+    echo "Wrapping program $PROG..."
+    
+    EXTRACOMMAND=""
+    if test -x $PROG; then
+	WRAPPED="$DIR/bin/$PROG"
+    else
+	echo -e "\nWARNING: Program $PROG does not exist ( yet? ) in this profile.\nIf you install it at a later time, you will have to rerun this script again.\n"
+	WRAPPED="$PROG"
+
+	EXTRACOMMAND="if test -x \"$DIR/bin/$PROG\"; then echo -e \"Program $PROG is new in profile $PROFILE.\nYou need to rerun 'make-profile $PROFILE' and possibly rebuild everything that depends on $PROG.\"; exit -1; fi"
+    fi
+
+    # set name of program wrapper
+    TARGET=$PREFIX/bin/profile/$PROFILE-$PROG
+
+    # create wrapper
+    cat > $TARGET <<EOF
+#!/bin/sh
+# wrapper for $PROG in profile $PROFILE
+$EXTRACOMMAND
+if echo "\$*" | grep "\-rpath" > /dev/null; then
+    # if one of the arguments is -rpath, add our library path in the same way
+    "$WRAPPED" -Wl,-rpath,$DIR/lib64,-rpath,$DIR/lib "\$@"
+else
+    #it is safe to just use the LD_RUN_PATH variable
+    LD_RUN_PATH="$DIR/lib:$DIR/lib64:$LD_RUN_PATH" "$WRAPPED" "\$@"
+fi
+EOF
+    chmod 755 $TARGET
+done
+popd > /dev/null
+
+# generates site file for autoconf. Using it, new programs will be installed with the
+# profile's prefix so its libraries don't interfere with the system defaults.
+echo "Creating site file..."
+echo "test \"\$prefix\" = NONE && prefix=$DIR" > $DIR/bin/site
+echo "CXX=$WRAPPERDIR/$PROFILE-g++" >> $DIR/bin/site
+echo "CC=$WRAPPERDIR/$PROFILE-gcc" >> $DIR/bin/site
+chmod 755 $DIR/bin/site
+
+echo -e "\nDone! You can select the profile using \". selectprofile $PROFILE\"."

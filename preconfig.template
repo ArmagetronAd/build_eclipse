@@ -1,0 +1,15 @@
+# we could select a completely different profile here...
+#. sysprofile/selectprofile gcc-3.4
+
+# or just an alternative version of gcc
+# export CXX=g++-3.4
+
+# or use distcc
+# export CXX="distcc g++"
+
+# or pass additional arguments to configure later on
+CONFARG="--enable-master"
+
+# specify path of xml2-config to use (z-man has several
+# on his machine)
+# XML2_CONFIG=/usr/bin/xml2-config

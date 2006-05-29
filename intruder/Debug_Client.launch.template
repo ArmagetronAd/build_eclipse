@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.eclipse.cdt.launch.localCLaunch">
+<stringAttribute key="org.eclipse.debug.core.source_locator_memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;PromptingSourceLocator project=&quot;armagetronad&quot; memento=&quot;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;&amp;#10;&amp;lt;cSourceLocator duplicateFiles=&amp;quot;false&amp;quot;/&amp;gt;&amp;#10;&quot;/&gt;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_ID" value="org.eclipse.cdt.debug.mi.core.CDebugger"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.PORT" value="10000"/>
+<booleanAttribute key="org.eclipse.cdt.debug.mi.core.STOP_ON_SOLIB_EVENTS" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.mi.core.REMOTE_TCP" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.WORKING_DIRECTORY" value="armagetronad/EclipseBuild/client_debug"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.HOST" value="localhost"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEV" value="/dev/ttyS0"/>
+<mapAttribute key="org.eclipse.cdt.launch.ENVIRONMENT_MAP"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.cdt.launch.ENVIRONMENT_INHERIT" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_START_MODE" value="run"/>
+<listAttribute key="org.eclipse.cdt.debug.mi.core.SOLIB_PATH"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEV_SPEED" value="115200"/>
+<booleanAttribute key="org.eclipse.cdt.debug.mi.core.AUTO_SOLIB" value="true"/>
+<booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="false"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="armagetronad"/>
+<booleanAttribute key="org.eclipse.cdt.launch.ENABLE_VARIABLE_BOOKKEEPING" value="true"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEBUG_NAME" value="gdb"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="EclipseBuild/client_debug/armagetronad"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.GDB_INIT" value="/Big/home/manuel/Tron/workspace/armagetronad/EclipseBuild/client_debug/.gdbinit"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.cdt.debug.ui.DefaultSourceLocator"/>
+</launchConfiguration>

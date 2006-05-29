@@ -1,0 +1,7 @@
+#!/bin/sh
+# wrapper for make 
+# if file redirect exists, call make from that directory instead of current directory
+
+REDIRECT=$(dirname $0)/redirect
+
+test -r $REDIRECT && make -C $(cat $REDIRECT) "$@"

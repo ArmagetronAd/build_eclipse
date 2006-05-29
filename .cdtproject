@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse-cdt version="2.0"?>
+
+<cdtproject id="org.eclipse.cdt.make.core.make">
+<extension point="org.eclipse.cdt.core.BinaryParser" id="org.eclipse.cdt.core.ELF"/>
+<data>
+<item id="org.eclipse.cdt.core.pathentry">
+<pathentry kind="src" path=""/>
+<pathentry kind="out" path=""/>
+<pathentry kind="con" path="org.eclipse.cdt.make.core.DISCOVERED_SCANNER_INFO"/>
+</item>
+<item id="cdt_indexer">
+<indexEnabled indexValue="true"/>
+<indexerProblemsEnabled indexProblemsValue="0"/>
+</item>
+<item id="org.eclipse.cdt.make.core.buildtargets">
+<buildTargets>
+<target name="clean" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>clean</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="distclean" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>distclean</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="select" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>select</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="beautify" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>beautify</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="initialize" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>initialize</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="register" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/management">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>register</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="all" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>all</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="debug" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>debug</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="optimize" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>optimize</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="client" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>client</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="server" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>server</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="default" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/multiconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>default</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="client_optimize" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/singleconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>client_optimize</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="client_debug" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/singleconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>client_debug</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="server_debug" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/singleconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>server_debug</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="server_optimize" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="maketargets/singleconfig">
+<buildCommand>make</buildCommand>
+<buildArguments>-k -C ../../</buildArguments>
+<buildTarget>server_optimize</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="select" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>select</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>true</useDefaultCommand>
+</target>
+<target name="register" targetID="org.eclipse.cdt.make.MakeTargetBuilder" path="">
+<buildCommand>make</buildCommand>
+<buildArguments>-C ../../</buildArguments>
+<buildTarget>register</buildTarget>
+<stopOnError>false</stopOnError>
+<useDefaultCommand>true</useDefaultCommand>
+</target>
+</buildTargets>
+</item>
+</data>
+</cdtproject>

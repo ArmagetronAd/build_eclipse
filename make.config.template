@@ -1,0 +1,53 @@
+########################
+# development settings #
+########################
+
+# activate debugging options that don't eat away much CPU time
+DEBUGLEVEL=3
+
+# activate warnings that are not too hard to avoid
+CODELEVEL=2
+
+####################
+# CXXFLAG settings #
+####################
+
+# common flags: no wrapping of error messages
+CXXFLAGS_COMMON=-fmessage-length=0
+
+# z-man's setting so he can't ignore warnings
+# CXXFLAGS_COMMON=-Werror -fmessage-length=0
+
+# flags for profiling
+# CXXFLAGS_COMMON=-g -pg
+
+# extra debug flags (most are handled by configure based on the debuglevel)
+CXXFLAGS_DEBUG=$(CXXFLAGS_COMMON)
+
+# extra optimizing flags (most are handled by configure, the optimized build
+# is done with DEBUGLELVEL=0)
+CXXFLAGS_OPTIMIZE=$(CXXFLAGS_COMMON)
+
+# additional CXXFLAGS for other configurations
+CXXFLAGS_SERVER=
+CXXFLAGS_CLIENT=
+CXXFLAGS_SERVER_DEBUG=
+CXXFLAGS_CLIENT_DEBUG=
+CXXFLAGS_SERVER_OPTIMIZE=
+CXXFLAGS_CLIENT_OPTIMIZE=
+
+########################
+# environment settings #
+########################
+
+# automatically clean project if configuration changed
+# ( disabled by default, it can be an annoying feature )
+# include autoclean
+
+# set path to AA
+AAPATH=../armagetronad
+
+# default make targets: one for building from the build project
+default: debug
+# and one for building from the AA project
+AAdefault: debug.global
