@@ -123,10 +123,10 @@ beautify: $(AAPATH)/configure
 	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./configure server --disable-glout
 	$(MAKE) -C build/server rebeautify 
 
-# run checks before committing to CVS
-cvscheck_single.%: %
-	$(MAKE) -C build/$* cvscheck
-cvscheck: cvscheck_single.client_debug cvscheck_single.client_optimize cvscheck_single.server_debug cvscheck_single.server_optimize
+# run checks before committing to SCM
+devcheck_single.%: %
+	$(MAKE) -C build/$* devcheck
+devcheck: devcheck_single.client_debug devcheck_single.client_optimize devcheck_single.server_debug devcheck_single.server_optimize
 
 # tests distribution
 distcheck_fake_single.%: %
@@ -137,5 +137,5 @@ distcheck_fake: distcheck_fake_single.client_debug distcheck_fake_single.server_
 distcheck: distcheck_single.client_debug
 distcheck_full: distcheck_single.client_debug distcheck_single.server_debug distcheck_single.client_optimize distcheck_single.server_optimize
 
-fullcheck: cvscheck distcheck_full
+fullcheck: devcheck distcheck_full
 
