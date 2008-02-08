@@ -11,7 +11,9 @@ Purpose:
    - different compilers and libraries
 
 The target audiences are AA developers and testers. The Eclipse integration uses symbolic links and thus
-is only usable in a unix environment.
+is only usable in a Unix environment.
+
+TODO: adapt this doc to SVN and/or bzr.
 
 -------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------
