@@ -13,6 +13,7 @@ Purpose:
 The target audiences are AA developers and testers. The Eclipse integration uses symbolic links and thus
 is only usable in a Unix environment.
 
+silly commit
 TODO: adapt this doc to SVN and/or bzr.
 
 -------------------------------------------------------------------------------------------------------
