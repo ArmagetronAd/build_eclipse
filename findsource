@@ -1,7 +1,16 @@
 #!/bin/bash
 
 source="../armagetronad"
+
+# find any thing that looks like it could be the source
 for f in $(echo ../*armagetronad*); do source=$f; done
+
+# restrict seach a little
+for f in $(echo ../*-armagetronad-work); do source=$f; done
+
+# find well known good defaults
+test -d ../0.2.8-armagetronad-work && source=../0.2.8-armagetronad-work
+test -d ../armagetronad && source=../armagetronad
 
 echo >> make.config
 echo "# set path to AA" >> make.config
