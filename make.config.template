@@ -44,9 +44,6 @@ CXXFLAGS_CLIENT_OPTIMIZE=
 # ( disabled by default, it can be an annoying feature )
 # include autoclean
 
-# set path to AA
-AAPATH=../armagetronad
-
 # default make targets: one for building from the build project
 default: debug
 # and one for building from the AA project

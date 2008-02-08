@@ -10,7 +10,8 @@ ECLIPSEBUILD=EclipseBuild
 INTRUDER=$(AAPATH)/$(ECLIPSEBUILD)
 
 make.config: preconfig sysprofile/profile.config
-
+	test -r $@ || cp make.config.template $@ && ./findsource
+	
 # register this build in the intruding directory ( so the .global make targets work )
 register: $(INTRUDER)/tag
 	$(MAKE) unregister

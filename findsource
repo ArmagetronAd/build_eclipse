@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source="../armagetronad"
+for f in $(echo ../*armagetronad*); do source=$f; done
+
+echo >> make.config
+echo "# set path to AA" >> make.config
+echo AASOURCE=${source} >> make.config
+
+
