@@ -1,0 +1,6 @@
+autoclean
+build
+make.config
+preconfig
+register
+sysprofile/profile.config
