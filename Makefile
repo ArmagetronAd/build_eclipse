@@ -140,3 +140,5 @@ distcheck_full: distcheck_single.client_debug distcheck_single.server_debug dist
 
 fullcheck: devcheck distcheck_full
 
+nothing:
+	@echo nothing to do.
