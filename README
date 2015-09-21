@@ -11,9 +11,7 @@ Purpose:
    - different compilers and libraries
 
 The target audiences are AA developers and testers. The Eclipse integration uses symbolic links and thus
-is only usable in a Unix environment.
-
-TODO: adapt this doc to SVN and/or bzr.
+is only usable in a unix environment.
 
 -------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------
@@ -114,6 +112,7 @@ Make targets:
   unregister: undoes the registration
  Single Configuration:
   {client/server}_{debug/optimize} : builds client or server in debug or optimized settings
+  {client/server}_{valgrind/optimizedebug/profile/deeprofile} : builds client or server in additional nonstantard settings. valgrind is for running inside valgrind, the code is non-optimized but only has basic debug information. optimizedebug is fully optimized with debug information for the really hard to find bugs. profile and deepprofile configure the build to produce gprof profile output; both are optimized, deepprofile disables inline functions so they appear in the call graph.
  Multiple Configurations:
   default:    whatever you configure; set to debug initially
   all:        all packages

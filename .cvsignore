@@ -1,0 +1,6 @@
+build
+make.config
+preconfig
+autoclean
+register
+memprofile1.txt

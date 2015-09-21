@@ -10,8 +10,7 @@ ECLIPSEBUILD=EclipseBuild
 INTRUDER=$(AAPATH)/$(ECLIPSEBUILD)
 
 make.config: preconfig sysprofile/profile.config
-	test -r $@ || cp make.config.template $@ && ./findsource
-	
+
 # register this build in the intruding directory ( so the .global make targets work )
 register: $(INTRUDER)/tag
 	$(MAKE) unregister
@@ -108,26 +107,57 @@ select: $(INTRUDER)
 # all targets should be remade every time
 # .PHONY: client_optimize server_optimize client_debug server_debug
 
+# optimizing: just like it is built in releases
 client_optimize: register $(AAPATH)/configure
-	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE)" bash ./confmake $@
+	AAPATH=$(AAPATH) CXX="${CXX}" MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE)" bash ./confmake $@
 
 server_optimize: register $(AAPATH)/configure
-	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./confmake $@ --disable-glout
+	AAPATH=$(AAPATH) CXX="${CXX}" MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./confmake $@ --disable-glout
 
+# debug: enables extra checks and debug information
 client_debug: register $(AAPATH)/configure
-	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_DEBUG) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_DEBUG)" bash ./confmake $@
+	AAPATH=$(AAPATH) CXX="${CXX}" MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_DEBUG) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_DEBUG)" bash ./confmake $@
 
 server_debug: register $(AAPATH)/configure
-	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_DEBUG) $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_DEBUG)" bash ./confmake $@ --disable-glout
+	AAPATH=$(AAPATH) CXX="${CXX}" MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_DEBUG) $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_DEBUG)" bash ./confmake $@ --disable-glout
+
+# for valgrind validation: light debug settings
+client_valgrind: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=1 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE)" bash ./confmake $@
+
+server_valgrind: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=1 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./confmake $@ --disable-glout
+
+# for bugs in optimized mode that are not found in debug or valgrind builds: optimized with debug symbols. Hard to debug, only for emergencies.
+client_optimizedebug: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE) -g" bash ./confmake $@
+
+server_optimizedebug: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE) -g" bash ./confmake $@ --disable-glout
+
+# for profiling with gprof.
+client_profile: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE) -g -pg -fno-inline-functions -fno-default-inline" bash ./confmake $@
+
+server_profile: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE) -g -pg" bash ./confmake $@ --disable-glout
+
+# for profiling with gprof. Optimized, but without inline functions so a full callgraph can be generated
+client_deepprofile: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_CLIENT) $(CXXFLAGS_CLIENT_OPTIMIZE) -g -pg" bash ./confmake $@
+
+server_deepprofile: register $(AAPATH)/configure
+	AAPATH=$(AAPATH) MAKE=$(MAKE) DEBUGLEVEL=0 CODELEVEL=$(CODELEVEL) CXX="${CXX}" CXXFLAGS="$(CXXFLAGS_OPTIMIZE)  $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE) -g -pg -fno-inline-functions -fno-default-inline" bash ./confmake $@ --disable-glout
+
 
 beautify: $(AAPATH)/configure
-	AAPATH=$(AAPATH) MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./configure server --disable-glout
+	AAPATH=$(AAPATH) CXX="${CXX}" MAKEFLAGS="${MAKEFLAGS}" MAKE=$(MAKE) DEBUGLEVEL=$(DEBUGLEVEL) CODELEVEL=$(CODELEVEL) CXXFLAGS="$(CXXFLAGS_OPTIMIZE) $(CXXFLAGS_SERVER) $(CXXFLAGS_SERVER_OPTIMIZE)" bash ./configure server --disable-glout
 	$(MAKE) -C build/server rebeautify 
 
-# run checks before committing to SCM
-devcheck_single.%: %
-	$(MAKE) -C build/$* devcheck
-devcheck: devcheck_single.client_debug devcheck_single.client_optimize devcheck_single.server_debug devcheck_single.server_optimize
+# run checks before committing to CVS
+cvscheck_single.%: %
+	$(MAKE) -C build/$* cvscheck
+cvscheck: cvscheck_single.client_debug cvscheck_single.client_optimize cvscheck_single.server_debug cvscheck_single.server_optimize
 
 # tests distribution
 distcheck_fake_single.%: %
@@ -138,7 +168,5 @@ distcheck_fake: distcheck_fake_single.client_debug distcheck_fake_single.server_
 distcheck: distcheck_single.client_debug
 distcheck_full: distcheck_single.client_debug distcheck_single.server_debug distcheck_single.client_optimize distcheck_single.server_optimize
 
-fullcheck: devcheck distcheck_full
+fullcheck: cvscheck distcheck_full
 
-nothing:
-	@echo nothing to do.

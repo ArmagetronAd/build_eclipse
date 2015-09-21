@@ -1,11 +1,12 @@
 #!/bin/bash
 
-bash ./configure "$@" || exit 1
+bash ./configure "$@"
 
 CONFIG=$1
 shift
 
 test -z "$MAKEFLAGS" || MAKEFLAGS=-"$MAKEFLAGS"
 
-$MAKE -C build/$CONFIG $MAKEFLAGS || exit 1
-
+pushd build/$CONFIG > /dev/null
+$MAKE $MAKEFLAGS
+popd > /dev/null
